@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset='utf-8' />
+  <title>Data Sorting</title>
+  <style type='text/css'>
+  ul, table {
+    display:table;
+    float:left;
+    background:#ececec;
+    margin:10px;
+    padding:0;
+    border:1px solid #ccc;
+  }
+  li, tr {
+    margin:0;
+    padding:8px;
+    border-top:1px solid #fff;
+    border-bottom:1px solid #ccc;
+    list-style-type:none;
+  }
+  li:first-child { border-top:0 }
+  li:last-child { border-bottom:0 }
+  </style>
+</head>
+<body>
+  <table class='a'>
+  <thead>
+    <tr>
+      <th rel='alpha' class='first'>First Name</th>
+      <th rel='alpha' class='last'>Last Name</th>
+    </tr>
+  </thead>
+  <tbody>
+  <tr><td class="first">Jeffrey</td> <td class="last">Way</td></tr>
+  <tr><td class="first">Sean</td> <td class="last">Hodge</td></tr>
+  <tr><td class="first">Adam</td> <td class="last">Miller</td></tr>
+  <tr><td class="first">Ian</td> <td class="last">Yates</td></tr>
+  <tr><td class="first">Adrian</td> <td class="last">Try</td></tr>
+  <tr><td class="first">Caleb</td> <td class="last">Aylsworth</td></tr>
+  </tbody>
+  <caption>Click the Table Headers to Sort; click again to reverse.</caption>
+  </table>
+  
+  <ul class='n'>
+  <li>4.09</li>
+  <li>4.10</li>
+  <li>67.8</li>
+  <li>100</li>
+  <li>-98</li>
+  <li>67.7</li>
+  <li>23</li>
+  </ul> 
+ <ul class='date'>
+  <li>2009-10-06</li>
+  <li>sept 25, 1995</li>
+  <li>1990-06-18</li>
+  <li>20100131</li>
+  <li>June 18, 2009</li>
+  <li>02/11/1993</li>
+  <li>15941219</li>
+  <li>1965-08-05</li>
+  <li>1425-12-25</li>
+  </ul> 
+  <ul class='time'>
+  <li>1:15:47</li>
+  <li>3:45 PM</li>
+  <li>12:00:17</li>
+  <li>06:56</li>
+  <li>19:39</li>
+  <li>4:32 AM</li>
+  <li>00:15:36</li>
+  </ul> 
+  <ul class="rating">
+  <li>Good</li>
+  <li>Excellent</li>
+  <li>Poor</li>
+  <li>Satisfactory</li>
+  </ul>
+  <ul class="url">
+    <li>http://net.tutsplus.com</li>
+    <li>http://web.appstorm.net</li>
+    <li>http://www.workawesome.com</li>
+    <li>http://daily.creattica.com/</li>
+    <li>https://mail.google.com/#inbox</li>
+  </ul>
+  <ul class="images">
+  <li><img alt="FlashDen" src="thumbnails/FlashDen_tn.jpg" /></li>
+  <li><img alt="AudioJungle" src="thumbnails/AudioJungle_tn.jpg" /></li>
+  <li><img alt="ThemeForest" src="thumbnails/ThemeForest_tn.jpg" /></li>
+  <li><img alt="VideoHive" src="thumbnails/VideoHive_tn.jpg" /></li>
+  <li><img alt="GraphicRiver" src="thumbnails/GraphicRiver_tn.jpg" /></li>
+  </ul>
+  
+  <ul class="curr">
+    <li>$299.66</li>
+    <li>$299.57</li>
+    <li>$0.14</li>
+    <li>$80.00</li>
+    <li>$53.28</li>
+    <li>$0.01</li>
+    <li>$15.51</li>
+  </ul>
+
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js" /></script>
+  <script src="jquery.datasort.js" /></script>
+  <script type="text/javascript">
+    
+    $('ul.n li').datasort({datatype: 'number', reverse: true});
+    $('ul.date li').datasort({datatype: 'date'});
+    $('ul.time li').datasort({datatype: 'time'});
+    $('ul.rating li').datasort({datatype: function(a, b) {
+          var o  = {
+          a : $(a).text(),
+          b : $(b).text() 
+          }
+          for (var e in o) {
+            o[e] = o[e].replace(/poor/i, 0)
+                       .replace(/satisfactory/i, 1)
+                       .replace(/good/i, 2)
+                       .replace(/excellent/i, 3);
+          }
+          return o.a - o.b;
+        }});
+    $('ul.url li').datasort();
+    $('ul.images li').datasort({
+                        datatype: 'alpha',
+                        sortElement : 'img',
+                        sortAttr    : 'alt'
+                      });
+    $('ul.curr li').datasort({ datatype: 'number' });
+    
+$('table.a thead th').toggle(
+	function() {
+		var $this = $(this);
+		$('table.a tbody tr').datasort({
+      datatype: $this.attr('rel'),
+      sortElement: 'td.' + $this.attr('class')
+      });
+	}, 
+	function() {
+		var $this = $(this);
+		$('table.a tbody tr').datasort({
+      datatype: $this.attr('rel'), 
+      sortElement: 'td.' + $this.attr('class'),
+      reverse: true 
+      });
+	}
+);
+    
+  </script>
+  
+</body>
+</html>
